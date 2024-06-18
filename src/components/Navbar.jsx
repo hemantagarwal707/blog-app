@@ -1,10 +1,11 @@
 import React from 'react'
 import {getAuth} from 'firebase/auth'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link , useLocation } from 'react-router-dom';
 
 const Navbar = () => {
     // console.log(getAuth());
     const auth = getAuth();
+    const location = useLocation();
     const navigate = useNavigate();
     const logOut = () =>{
         auth.signOut();
@@ -29,13 +30,17 @@ const Navbar = () => {
 
         <div  className= "email d-flex  justify-content-center align-items-center" style={{gap:'1rem'}} >
 
+  {location.pathname === '/blogs' &&  <Link to={"/addblog"} type="button" class="btn btn-warning" >
+  Add Blog
+</Link>}
 
-      <button className= 'btn btn-warning'>AddBlog </button>
+     {location.pathname !== '/blogs' &&  <Link to={"/blogs"} type="button" class="btn btn-warning" >
+ Back To Blogs
+</Link>}
+ 
       <h3>{auth?.currentUser?.email}</h3>
   
-  <button 
-  onClick={logOut}
-  className= 'btn btn-danger'>Log Out </button>
+
   
   </div>
   </div>
