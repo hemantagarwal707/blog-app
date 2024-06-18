@@ -1,16 +1,17 @@
 import React from 'react'
 import { auth } from '../Firebase'
 import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-
+  const navigate = useNavigate();
 
     const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
         const result = await signInWithPopup(auth, provider);
         console.log(result);
 
-
+        navigate('/blogs')
 
     }
 
