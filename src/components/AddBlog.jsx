@@ -1,25 +1,52 @@
 import React , { useState } from 'react'
 import Navbar from './Navbar'
-
+import {db} from '../Firebase'
+import { addDoc, collection } from 'firebase/firestore'
+import { getAuth } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
 const AddBlog = () => {
 
-
-  
+  const auth = getAuth();
+  const navigate = useNavigate();
   const [data, setData] = useState({
       title: '',
       shortDesc: '',
       longDesc: '',
       imgUrl: '',
+      authorName:auth.currentUser.displayName,
+        authorImg:auth.currentUser.photoURL
       
   }) 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
 }
+const colleRef = collection(db,"blog");
+const handleSubmit = async (e) =>{
+  e.preventDefault();
+  // alert("Blog Added!")
+  
+  await addDoc(colleRef,data);
+  
+  console.log("form submitted");
+  setTimeout(() => {
+    navigate('/blogs')
+}, 3000);
+
+setData({
+title: '',
+shortDesc: '',
+logDesc: '',
+imgUrl: '',
+
+})
+  
+
+}
   return (
   <>
   <Navbar/>
   <div className="container my-3" style={{ padding: '2rem', width: '50%' }}>
-  <form>
+  <form onSubmit={handleSubmit}>
   <div class="mb-3">
   <label for="exampleInputEmail1" class="form-label">Title</label>
   <input
@@ -49,7 +76,7 @@ const AddBlog = () => {
 <div class="mb-3">
   <label for="exampleFormControlTextarea1" class="form-label">Full Desciption</label>
   <textarea
-      value={data.logDesc}
+      value={data.longDesc}
       name="longDesc"
       required
       onChange={handleChange}
@@ -82,12 +109,18 @@ const AddBlog = () => {
   </form>
   </div>
   
-  
+   
+
+
+
+
+
   
   
   
   </>
   )
-}
+  
+  }
 
 export default AddBlog
