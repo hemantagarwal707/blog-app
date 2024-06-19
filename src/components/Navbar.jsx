@@ -30,15 +30,20 @@ const Navbar = () => {
 
         <div  className= "email d-flex  justify-content-center align-items-center" style={{gap:'1rem'}} >
 
-  {location.pathname === '/blogs' &&  <Link to={"/addblog"} type="button" class="btn btn-warning" >
+  {(location.pathname === '/blogs' &&  <Link to={"/addblog"}  className='btn btn-warning' >
   Add Blog
-</Link>}
+</Link>)}
 
-     {location.pathname !== '/blogs' &&  <Link to={"/blogs"} type="button" class="btn btn-warning" >
- Back To Blogs
-</Link>}
+{(location.pathname !== '/blogs' &&  <Link to={"/blogs"} className='btn btn-warning' >
+  BackToBlogs
+</Link>)}
+<h3>{auth?.currentUser?.email}</h3>
+
+    <button
+    onClick={logOut}
+    className='btn btn-danger'>Log Out</button>
  
-      <h3>{auth?.currentUser?.email}</h3>
+      
   
 
   
