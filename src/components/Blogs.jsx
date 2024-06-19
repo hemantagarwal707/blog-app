@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import {getAuth} from 'firebase/auth'
 import { db} from '../Firebase'
-import { onSnapshot, collection} from 'firebase/firestore'
+import { onSnapshot, collection, doc, deleteDoc} from 'firebase/firestore'
 const Blogs = () => {
   const [allBlogs, setAllBlogs] = useState([])
   const auth = getAuth();
@@ -23,6 +23,11 @@ const Blogs = () => {
     console.log(allBlogs)
 
   }, [])
+  const deleteBlog = async (id) =>{
+    alert("Document will deleted forever..!")
+    const deleteData = doc(db, "blog", id)
+    await deleteDoc(deleteData);
+  }
 
   return (
     <>
@@ -65,7 +70,7 @@ const Blogs = () => {
                     <h5 className="card-text">{data.shortDesc}</h5>
                     <h5 className=""><small className="text-warning">Last updated 3 mins ago</small></h5>
                     <button className='btn btn-primary mx-3' >View More</button>
-                    <button className='btn btn-danger mx-3' >Delete</button>
+                    <button className='btn btn-danger mx-3' onClick={()=>deleteBlog(data.id)}>Delete</button>
 
                   </div>
                 </div>
