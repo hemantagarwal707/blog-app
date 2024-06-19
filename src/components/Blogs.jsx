@@ -1,53 +1,94 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import {getAuth} from 'firebase/auth'
-
+import { db} from '../Firebase'
+import { onSnapshot, collection} from 'firebase/firestore'
 const Blogs = () => {
+  const [allBlogs, setAllBlogs] = useState([])
   const auth = getAuth();
-  return (
+  const colleRef = collection(db, 'blog')
+  useEffect(() => {
 
-  <>
+    const getdata = async () =>{
+
+      
+   await onSnapshot(colleRef, (snapshot) => {
+        setAllBlogs(snapshot.docs.map((doc) => ({
+          ...doc.data(), id: doc.id
+        })))
+      })
+      
+    }
+    getdata();
+    console.log(allBlogs)
+
+  }, [])
+
+  return (
+    <>
     <Navbar />
 
-    <div className="container d-flex justify-content-center align-items-center flex-column my-3">
-   <div className="container">
-    <div  className= "user-content d-flex justify-content-center align-items-center" style={{width:"65%"}} >
-        
+    <div style={{ marginTop: '1rem', textAlign: 'center', minHeight: "100vh" }}>
+    {allBlogs.map((data)=>{
+      return(
+        <>
        
-      
-          <img src={auth?.currentUser?.photoURL} alt="photourl"
-          style={{width:"7%", borderRadius:"50%", margin:'0.5rem'}} />
 
-          <h3> {auth?.currentUser?.displayName} </h3>
-        </div>
+      <div className="container  my-3 ">
+        <div className='d-flex justify-content-center align-item-center flex-column '>
 
-        </div>
+          <div className="author d-flex justify-content-center align-items-center"
+            style={{
+              width: "60%",
 
-    <div class="card mb-3 bg-secondary" style={{ maxWidth:'700px' }}>
-      <div class="row g-0 ">
-        <div class="col-md-4 d-flex justify-content-center align-items-center">
-          <img src= "https://m.media-amazon.com/images/I/81LevhQnGmL._SY445_.jpg" class="img-fluid rounded-start" alt="..." style={{
-            width:"70%"
-          }} />
-        </div>
-        <div class="col-md-8">
-          <div class="card-body text-center text-white">
-            <h1 class="card-title">Card title</h1>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-          
-           <button className='btn btn-primary mx-3'>View More </button>
-           <button className='btn btn-danger'>Delete </button>
-           </div>
-           
+            }}
+          >
+            <img src={data.authorImg} alt="author" style={{
+              width: "4%",
+              borderRadius: "50%",
+              margin: '1rem'
+            }} />
+            <h3>{data.authorName}</h3>
+          </div>
+          <div className='d-flex justify-content-center align-item-center'>
 
+            <div className="card center bg-secondary" style={{ width: "70%", alignItems: "center", color: 'white' }}>
+              <div className="row ">
+                <div className="col-md-4 d-flex justify-content-center align-item-center">
+                  <img src={data.imgUrl} className="img-fluid rounded-start" alt="..." style={{
+                    width:"60%"
+                  }} />
+                </div>
+                <div className="col-md-8">
+                  <div className="card-body">
+                    <h2 className="card-title">{data.title}</h2>
+                    <h5 className="card-text">{data.shortDesc}</h5>
+                    <h5 className=""><small className="text-warning">Last updated 3 mins ago</small></h5>
+                    <button className='btn btn-primary mx-3' >View More</button>
+                    <button className='btn btn-danger mx-3' >Delete</button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
+
+
+
+
+
+    </>
+      )
+    })}
     </div>
-</>
-  )
+    
+  </>
+)
 }
+
 export default Blogs
 
 
