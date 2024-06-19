@@ -3,6 +3,7 @@ import Navbar from './Navbar'
 import {getAuth} from 'firebase/auth'
 import { db} from '../Firebase'
 import { onSnapshot, collection, doc, deleteDoc} from 'firebase/firestore'
+import { Link } from 'react-router-dom'
 const Blogs = () => {
   const [allBlogs, setAllBlogs] = useState([])
   const auth = getAuth();
@@ -69,7 +70,9 @@ const Blogs = () => {
                     <h2 className="card-title">{data.title}</h2>
                     <h5 className="card-text">{data.shortDesc}</h5>
                     <h5 className=""><small className="text-warning">Last updated 3 mins ago</small></h5>
-                    <button className='btn btn-primary mx-3' >View More</button>
+                    <Link className='btn btn-primary' 
+                    to={`/blogs/${data.id}`}
+                    >View More</Link>
                     <button className='btn btn-danger mx-3' onClick={()=>deleteBlog(data.id)}>Delete</button>
 
                   </div>

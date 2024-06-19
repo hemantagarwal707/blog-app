@@ -35,7 +35,7 @@ const handleSubmit = async (e) =>{
 setData({
 title: '',
 shortDesc: '',
-logDesc: '',
+longDesc: '',
 imgUrl: '',
 
 })
