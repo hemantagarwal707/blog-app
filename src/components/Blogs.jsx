@@ -4,6 +4,8 @@ import {getAuth} from 'firebase/auth'
 import { db} from '../Firebase'
 import { onSnapshot, collection, doc, deleteDoc} from 'firebase/firestore'
 import { Link } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Blogs = () => {
   const [allBlogs, setAllBlogs] = useState([])
   const auth = getAuth();
@@ -28,10 +30,32 @@ const Blogs = () => {
     alert("Document will deleted forever..!")
     const deleteData = doc(db, "blog", id)
     await deleteDoc(deleteData);
+    toast.success('Your blog is deleted!', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      });
   }
 
   return (
     <>
+    <ToastContainer
+    position="top-right"
+    autoClose={4998}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="dark"
+    />
     <Navbar />
 
     <div style={{ marginTop: '1rem', textAlign: 'center', minHeight: "100vh" }}>

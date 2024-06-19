@@ -4,6 +4,8 @@ import {db} from '../Firebase'
 import { addDoc, collection } from 'firebase/firestore'
 import { getAuth } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const AddBlog = () => {
 
   const auth = getAuth();
@@ -39,11 +41,33 @@ longDesc: '',
 imgUrl: '',
 
 })
-  
+toast.success('Your blog is Added!', {
+  position: "top-right",
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "dark",
+  });
 
 }
   return (
   <>
+  <ToastContainer
+  position="top-right"
+  autoClose={4998}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  theme="dark"
+  />
+  
   <Navbar/>
   <div className="container my-3" style={{ padding: '2rem', width: '50%' }}>
   <form onSubmit={handleSubmit}>
